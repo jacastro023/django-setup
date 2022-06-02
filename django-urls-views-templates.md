@@ -1,81 +1,3 @@
-<img src="https://i.imgur.com/iohZqCp.png">
-
-# Django URLs, Views, and Templates
-
-## Learning Objectives
-
-| Students Will Be Able To: |
-|---|
-| Describe the Django Request/Response Cycle |
-| Start a new Django project and create an app |
-| Use a URL configuration (URLconf) to define routes |
-| Define basic View functions |
-| Define a Django template |
-| Use template inheritance (partial templates) |
-| Include static files in a template |
-| Render data in a template |
-
-## Learning Django Game Plan
-
-All lessons this week are 100% Django!
-
-The lessons will add features, piece-by-piece, to a modern full-stack reference app named **CatCollector**.
-
-
-Then, after the lessons, you will use lab time to repeat what you saw in the lesson by building your own app named anything you want, say - **FinchCollector**.
-
-Here's an overview of the high-level topics we'll be covering this week, in order:
-
-1. Django URLs, Views, and Templates
-2. Data Models and Migrations
-3. Django Class-based Views
-4. One-to-Many Models & ModelForms
-5. Many-to-Many Models
-6. Uploading Images to the Cloud
-7. Django Authentication
-
-Let's get on with part 1...
-
-## Minimalist vs. Full-featured Frameworks
-
-#### Review The Philosophy of Express
-
-Express was a minimalist framework that didn't provide much functionality out of the box.
-
-It gave us a way to define routes, map controller actions to those routes, and render dynamic views.
-
-Express didn't have many rules, for example, we could name files anything and put them anywhere we wanted.
-
-If we did need additional capability, it usually meant installing and configuring additional middleware.
-
-#### The Philosophy of Django
-
-Unlike Express, Django, is a full-featured web framework that provides a lot of built-in functionality.
-
-However, Django has many _conventions_, i.e., it expects us to follow its rules.
-
-You will find that Django has all sorts of _helper_ classes, methods, etc. 
-
-What Express has to offer can be grasped in a matter of days, whereas Django could take weeks to feel comfortable with what it has to offer.
-
-Luckily for us though, the basics aren't too bad though, as long as you don't try to learn every little detail about each helper, etc.
-
-## The Request/Response Cycle in Django
-
-In Unit 2, we learned that in a full-stack web application:
-
-- Clicking links and submitting forms on the front-end (browser) sends HTTP requests to the web app running on a web server.
-- The web server has a routing mechanism that matches HTTP requests to code.
-- That code typically performs CRUD, then either:
-	- Renders dynamic templates for Read data operations.
-	- Redirects the browser in the case of Create, Update or Delete data operations. 
-
-Once again, let's review this diagram that shows how a request flows through a Django project:
-
-<img src="https://i.imgur.com/1fFg7lz.png">
-
-## Start the **CatCollector** Project
-
 #### Create the database
 
 Databases are not automatically created by Django.
@@ -88,7 +10,7 @@ $ createdb catcollector
 
 #### Start the Project
 
-There is no starter-code for this lesson. Move into this lesson's folder and run the following command to create the Django project:
+run the following command to create the Django project:
 
 ```
 $ django-admin startproject catcollector
@@ -115,8 +37,6 @@ It makes sense to name the main app generically, so let's do it:
 ```
 $ python3 manage.py startapp main_app
 ```
-
-> Note:  During SEI, to save time and keep things simple, we are not going to mess with Python _virtual environments_.  So, whenever you see the commands `python` and `pip`, you will always type `python3` and `pip3` instead.  If you have already used virtual environments and are familiar with their use, feel free to continue using them.
 
 You'll now find a **main_app** folder within the top-level project folder. That folder has been configured to be a Python module.
 
@@ -254,8 +174,6 @@ The Home page route has been defined!  On to the view...
 
 ## Defining View Functions
 
-❓ **What is the equivalent to a Django View Function in Express?**
-
 In the URL for the Home page we referenced a view function named `home`.
 
 Let's define it where we will define all of the app's views, in **main_app/views.py**:
@@ -273,8 +191,6 @@ def home(request):
 
 > Note that in order to use the `HttpResponse` function, we must import it like the others we've used so far.
 
-Just a baby step for now. What we've done is define a view function that responds to the browser's HTTP request by sending a string (that resembles a cat).
-
 All view functions need to define a positional parameter to accept a _request_ object Django will be passing in.  This _request_ object is very much like the `req` object we worked with in Express controller actions.  As shown above, the parameter is typically named `request`.
 
 The function `HttpResponse` is the simplest way to send something back in response to a request. It's like `res.send()` was in Express.
@@ -282,22 +198,6 @@ The function `HttpResponse` is the simplest way to send something back in respon
 We will learn some more powerful ways to respond shortly when we start rendering templates.
 
 Now when browsing to `localhost:8000`, we should see our welcoming cat instead of seeing the rocket page!
-
-### Practice - Define another URL and View Function
-
-Take 5 minutes to:
-
-1. Define another route with a path of `about/`.  Define it **exactly** as shown (with a trailing slash instead of a leading slash).  This is the convention for Django.
-
-2. Name the route `'about'`.
-
-3. Map the route to a view named `views.about`.
-
-4. Define the `about` view function referenced in step 3 so that it displays the following text:  `<h1>About the CatCollector</h1>`
-
-Test it by browsing to `localhost:8000/about`:
-
-<img src="https://i.imgur.com/K8jpo14.png">
 
 ## Using Django Templates
 
@@ -315,8 +215,6 @@ Django has two templating engines built-in:
 Not surprisingly, a Django project is pre-configured to use DTL, which is very capable, so we'll be using it throughout.
 
 #### One-time Template Setup
-
-By default, a Django project is configured to look for templates inside of a `templates` folder within each app's folder (`main_app` in this case).
 
 Let's create that `templates` folder for `main_app` to hold all of its template files:
 
@@ -380,8 +278,6 @@ Browsing to `localhost:8000/about` will now render the new **about.html** templa
 
 So far, so good, but we haven't yet used any of DTL's power to dynamically render data, perform control flow, etc.
 
-Next, before we go any further and break the DRY principle by repeating the boilerplate in future templates, let's see how we can use what Django calls **template inheritance**.
-
 ## Template Inheritance (Partials)
 
 Django has a [template inheritance](https://docs.djangoproject.com/en/2.1/ref/templates/language/#template-inheritance) feature built-in.
@@ -392,8 +288,6 @@ The reason Django calls it template _inheritance_ is because:
 
 - You can declare that a template **extends** another template.
 - Extending another template results in defined **blocks** _overriding_ (replacing) blocks defined in the template being extended.
-
-<img src="https://i.imgur.com/ZajRcLx.jpg">
 
 Here's how it works in practice. First let's create a **base.html** template (named by convention):
 
@@ -466,8 +360,6 @@ To see template inheritance in action, let's update **about.html** so that it ex
 
 {% endblock %}
 ```
-
-Refresh. Yeah, it's not great (yet), but the template inheritance is working and we can stay nice and DRY.
 
 ## Including Static Files in a Template
 
@@ -701,14 +593,6 @@ You now know pretty much all there is to know about URLs and the overall structu
 However, we've only touched upon the basics of views and DTL templating.
 
 We're going to get our first look at Models in the next lesson where we'll use one to replace the current `Cat` class so that we can save cats in the database!
-
-## Lab
-
-The lab for this lesson is repeating everything we just did, except you'll collect something else like Finches and call the project something like finchcollector, or whatever.
-
-The final version of your "Finch Collector" project will be a deliverable.
-
-Because your completed Finch Collector app will be fairly comprehensive and be a nice addition to your portfolio, you should **create it outside of the class repo** so that you can make it a repo in your personal GitHub account.
 
 ## References
 
